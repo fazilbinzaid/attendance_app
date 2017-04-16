@@ -16,7 +16,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['email']
 
     class Meta:
         verbose_name = 'user'
@@ -35,7 +35,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     # def get_absolute_url(self):
-    #     return "profiles/"
+    #     return "/"
 
 
 class Teacher(models.Model):
