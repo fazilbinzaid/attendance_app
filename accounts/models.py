@@ -32,7 +32,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def __str__(self):
-        return self.email
+        return self.username
 
     # def get_absolute_url(self):
     #     return "/"

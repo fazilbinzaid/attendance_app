@@ -24,17 +24,17 @@
 <body>
   
   {% if request.user.is_authenticated %}
-  {% include 'nav_bar.html' %}
+    {% include 'accounts/nav_bar.html' %}
   {% endif %}
   
   <div class='col-md-10 col-md-offset-2' id='page'>
-  	<div class='container-fluid'>
-	    {% block content %}{% endblock %}
-	</div>
+      {% block content %}{% endblock %}
   </div>
 
-	<script src="{% static 'js/jquery.js' %}"></script>
-	<script src="{% static 'js/bootstrap.min.js' %}"></script>
-	<script src="{% static 'js/login.js' %}"></script>
+  <script src="{% static 'js/jquery.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/login.js' %}"></script>
+  <script src="{% static 'metisMenu/metisMenu.js' %}"></script>
+
 </body>
 

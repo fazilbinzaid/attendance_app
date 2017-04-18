@@ -7,7 +7,7 @@ from django.http import HttpResponse
 # Create your views here.
 
 class LoginView(View):
-	template_name = 'login.html'
+	template_name = 'accounts/login.html'
 
 	def get(self, request, *args, **kwargs):
 		# print(request.POST)

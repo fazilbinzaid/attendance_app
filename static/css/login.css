@@ -22,12 +22,12 @@ Last change	: 2015/03/27
 html,
 body {
   background: #efefef;
-  padding: 10px;
+  padding: 0px;
   font-family: 'Varela Round';
 }
 /*=== 2. Anchor Link ===*/
 a {
-  color: #aaaaaa;
+  /*color: #aaaaaa;*/
   transition: all ease-in-out 200ms;
 }
 a:hover {
@@ -44,9 +44,9 @@ a:hover {
 }
 /*=== 4. Main Form ===*/
 .login-form-1 {
-  max-width: 300px;
+  /*max-width: 300px;
   border-radius: 5px;
-  display: inline-block;
+  display: inline-block;*/
 }
 .main-login-form {
   position: relative;
