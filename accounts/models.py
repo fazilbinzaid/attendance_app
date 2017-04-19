@@ -49,12 +49,15 @@ class Teacher(models.Model):
 
 
 class Batch(models.Model):
-	name = models.CharField(max_length=10, unique=True)
-	division = models.CharField(max_length=2, null=True, blank=True)
-	strength = models.IntegerField()
+    name = models.CharField(max_length=10, unique=True)
+    division = models.CharField(max_length=2, null=True, blank=True)
+    strength = models.IntegerField()
 
-	def __str__(self):
-		return self.name
+    class Meta:
+        verbose_name_plural = 'batches'
+
+    def __str__(self):
+        return self.name
 
 
 class Student(models.Model):

@@ -23,9 +23,9 @@
 
 <body>
   
-  {% if request.user.is_authenticated %}
-    {% include 'accounts/nav_bar.html' %}
-  {% endif %}
+  <!-- {% if request.user.is_authenticated %} -->
+  {% include 'accounts/nav_bar.html' %}
+  <!-- {% endif %} -->
   
   <div class='col-md-10 col-md-offset-2' id='page'>
       {% block content %}{% endblock %}
