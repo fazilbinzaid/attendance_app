@@ -30,11 +30,13 @@
   <div class='col-md-10 col-md-offset-2' id='page'>
       {% block content %}{% endblock %}
   </div>
-
-  <script src="{% static 'js/jquery.js' %}"></script>
+  <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static 'bower_components/jquery-form-validator/form-validator/jquery.form-validator.min.js' %}"></script>
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'js/login.js' %}"></script>
   <script src="{% static 'metisMenu/metisMenu.js' %}"></script>
+  <script src="{% static 'js/login.js' %}"></script>
+  <script src="{% static 'js/login.validators.js' %}"></script>
+
 
 </body>
 
