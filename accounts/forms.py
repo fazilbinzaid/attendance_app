@@ -1,5 +1,7 @@
 from django import forms
+from accounts.models import Student
 
+CHOICES = (0, 1)
 
 class LoginForm(forms.Form):
 	username = forms.CharField(max_length=32)
@@ -10,7 +12,6 @@ class UserForm(forms.Form):
 	username = forms.CharField(max_length=32)
 	password = forms.CharField(widget=forms.PasswordInput)
 	confirm_password = forms.CharField(max_length=32)
-	name = forms.CharField(max_length=32)
 	email = forms.EmailField()
 
 	def __init__(self, *args, **kwargs):
@@ -25,5 +26,17 @@ class UserForm(forms.Form):
 		confirm_password = cleaned_data.pop('confirm_password')
 		if not password == confirm_password:
 			raise forms.ValidationError("passwords donot match. Please re-enter.")
-		print(cleaned_data)
 		return cleaned_data
+
+class StudentForm(forms.ModelForm):
+	
+	def __init__(self, *args, **kwargs):
+		super(StudentForm, self).__init__(*args, **kwargs)
+		for field in self.fields:
+			self.fields[field].widget.attrs.update({'class': 'form-control'})
+
+	class Meta:
+		model = Student
+		fields = ('batch', 'full_name', 'roll_no',
+				  'register_no', 'guardian_name', 'contact_no',
+				  'address')

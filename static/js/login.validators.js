@@ -1,8 +1,1 @@
 
-$(function() {
-
-  $.validate({
-    modules: 'security'
-  });
-
-})

@@ -23,20 +23,22 @@
 
 <body>
   
-  <!-- {% if request.user.is_authenticated %} -->
+  {% if request.user.is_authenticated %}
   {% include 'accounts/nav_bar.html' %}
-  <!-- {% endif %} -->
+  {% endif %}
   
-  <div class='col-md-10 col-md-offset-2' id='page'>
-      {% block content %}{% endblock %}
+  <div class="col-lg-10 col-lg-offset-2">
+    {% block content %}{% endblock %}
   </div>
+      
   <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'bower_components/jquery-form-validator/form-validator/jquery.form-validator.min.js' %}"></script>
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'metisMenu/metisMenu.js' %}"></script>
-  <script src="{% static 'js/login.js' %}"></script>
-  <script src="{% static 'js/login.validators.js' %}"></script>
 
+  <!-- FOR NAVIGATION BAR -->
+  <script src="{% static 'metisMenu/metisMenu.js' %}"></script>
+
+  {% block javascript %}{% endblock %}
 
 </body>
 

@@ -1,22 +1,15 @@
+{% extends "accounts/base.html" %}
 {% load static %}
 
-<!-- {% block content %} -->
+{% block content %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'css/login.css' %}" rel="stylesheet">
-</head>
 <body>
-    <div class="col-lg-10 col-lg-offset-1" style="padding:50px 0">
+    <div class="col-lg-10 col-lg-offset-2" style="padding:50px 0">
     <br><br><br>
         <div>
             <div class="login-form-1">
-                <div class="col-lg-4 col-lg-offset-1" id="login-form" >
-                    <form class="text-left" method="post">{% csrf_token %}
+                <div class="col-lg-4" id="login-form" >
+                    <form class="text-left" action="{%url 'accounts:login'%}" method="post">{% csrf_token %}
                         <div class="logo">Login</div>
                         <div class="login-form-main-message"></div>
                         <div class="main-login-form">
@@ -38,7 +31,7 @@
                         </div>
                         <div class="etc-login-form">
                             <p>forgot your password? <a id="forgot-password-form-link" href="#">click here</a></p>
-                            <!-- <p>new user? <a id="register-form-link" href="#">create new account</a></p> -->
+                            <!-- <p>new user? <a id="register-form-link" href="{%url 'accounts:register'%}">create new account</a></p> -->
                         </div>
                     </form>                
                 </div>
@@ -63,16 +56,20 @@
                                     <input type="password" class="form-control" id="password_confirm" name="confirm_password" placeholder="confirm password" data-validation="confirmation" data-validation-confirm="password">
                                     <!-- {{form.confirm_password}} -->
                                 </div>
+
+                                <!-- <div class="form-group login-group-checkbox text-left">
+                                    <div>
+                                        <input type="radio" class="" name="is_teacher" id="teacher" value="1" placeholder="username">
+                                        <label for="teacher">Teacher</label>
+                                        <input type="radio" class="" name="is_teacher" id="student" value="0" placeholder="username">
+                                        <label for="student">Student</label>
+                                    </div>
+                                </div> -->
                                 
                                 <div class="form-group">
                                     <label for="reg_email" class="sr-only">Email</label>
                                     <input type="text" class="form-control" id="reg_email" name="email" placeholder="email" data-validation="email">
                                     <!-- {{form.email}} -->
-                                </div>
-                                <div class="form-group">
-                                    <label for="reg_fullname" class="sr-only">Full Name</label>
-                                    <input type="text" class="form-control" id="reg_fullname" name="name" placeholder="full name" data-validation="length" data-validation-length="min6">
-                                    <!-- {{form.name}} -->
                                 </div>
                                 
                                 <div class="form-group login-group-checkbox">
@@ -83,10 +80,11 @@
                             <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
                         </div>
                         <div class="etc-login-form">
-                            <!-- <p>already have an account? <a id="login-form-link" href="#">login there</a></p> -->
+                            <!-- <p>already have an account? <a href="{}">login there</a></p> -->
                         </div>
                     </form>
                 </div>
+                
                 <div class="col-lg-4 col-lg-offset-2" id="forgot-password-form" >
                     <form class="text-left" method="post">{% csrf_token %}
                         <div class="logo">Forgot password?</div>
@@ -98,32 +96,25 @@
                             <div class="login-group">
                                 <div class="form-group">
                                     <label for="fp_email" class="sr-only">Email address</label>
-                                    <input type="text" class="form-control" id="fp_email" name="fp_email" placeholder="email address">
+                                    <input type="text" class="form-control" id="fp_email" name="fp_email" placeholder="email address" data-validation="email">
                                 </div>
                             </div>
                             <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
                         </div>
                         <div class="etc-login-form">
                             <p>already have an account? <a id="login-form-link" href="#">login here</a></p>
-                            <p>new user? <a id="register-form-link" href="#">create new account</a></p>
+                            <!-- <p>new user? <a id="register-form-link" href="{%url 'accounts:register'%}">create new account</a></p> -->
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'bower_components/jquery-form-validator/form-validator/jquery.form-validator.min.js' %}"></script>
-    <script src="{% static 'metisMenu/metisMenu.js' %}"></script>
-    <script src="{% static 'js/login.js' %}"></script>
-    <script type="text/javascript">
-        $.validate({
-            modules: 'security'
-        })
-    </script>
-
 </body>
-</html>
 
-<!-- {% endblock %} -->
+{% endblock %}
+
+{% block javascript %}
+  <script src="{% static 'js/login.js' %}"></script>
+  <script src="{% static 'js/login.validators.js' %}"></script>
+{% endblock %}

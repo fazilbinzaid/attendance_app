@@ -8,7 +8,6 @@ from abstract.models import AbstractTimeStampModel
 class AuthUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=20, unique=True)
     email = models.EmailField(unique=True)
-    name = models.CharField(max_length=30)
     created_on = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -23,10 +22,10 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = 'users'
 
     def get_short_name(self):
-        return self.name
+        return self.username
 
     def get_full_name(self):
-        return self.name
+        return self.username
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
@@ -40,12 +39,12 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
 
 class Teacher(models.Model):
     user = models.OneToOneField(AuthUser, primary_key=True)
-    name = models.CharField(max_length=32, null=True)
+    full_name = models.CharField(max_length=32, null=True)
     contact_no = models.CharField(max_length=13, blank=True)
     address = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name
+        return self.full_name
 
 
 class Batch(models.Model):
@@ -57,15 +56,18 @@ class Batch(models.Model):
         verbose_name_plural = 'batches'
 
     def __str__(self):
-        return self.name
+        return "%s - %s" % (self.name, self.division)
 
 
 class Student(models.Model):
     user = models.OneToOneField(AuthUser, primary_key=True)
     batch = models.ForeignKey(Batch, related_name='students', null=True, blank=True)
-    name = models.CharField(max_length=30)
+    full_name = models.CharField(max_length=30, null=True, blank=True)
     roll_no = models.IntegerField(null=True, blank=True)
-    address = models.CharField(max_length=50)
+    register_no = models.IntegerField(null=True, blank=True)
+    guardian_name = models.CharField(max_length=30, null=True, blank=True)
+    address = models.CharField(max_length=50, null=True, blank=True)
+    contact_no = models.CharField(max_length=13, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.user.username
