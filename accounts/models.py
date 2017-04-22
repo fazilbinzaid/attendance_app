@@ -40,6 +40,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
 class Teacher(models.Model):
     user = models.OneToOneField(AuthUser, primary_key=True)
     full_name = models.CharField(max_length=32, null=True)
+    guardian_name = models.CharField(max_length=30, null=True, blank=True)
     contact_no = models.CharField(max_length=13, blank=True)
     address = models.CharField(max_length=50)
 

@@ -12,64 +12,57 @@
         <div class="text-center">
           <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
           <h6>Upload a different photo...</h6>
-          
+
           <input type="file" class="form-control">
         </div>
       </div> -->
-      
+
       <!-- edit form column -->
       <div class="col-md-12 personal-info">
-        <div class="alert alert-info alert-dismissable">
-          <a class="panel-close close" data-dismiss="alert">×</a> 
-          <i class="fa fa-coffee"></i>
-          <strong>{{form.non_field_errors}}</strong>. Use this to show important messages to the user.
-        </div>
+        <div class="alert"></div>
         <h3>Personal info</h3>
-        
+
         <form class="form-horizontal" id="user-profile" role="form">{% csrf_token %}
           <div class="form-group">
-            <label class="col-lg-3 control-label">Full name:</label>
+            <label class="col-lg-3 control-label">{{form.full_name.label_tag}}</label>
             <div class="col-lg-8">
-              <!-- <input class="form-control" name="full_name" type="text"> -->
-			  {{form.full_name}}
+			        {{form.full_name}}
             </div>
           </div>
           <div class="form-group">
-            <label class="col-lg-3 control-label">Register No:</label>
+            <label class="col-lg-3 control-label">{{form.register_no.label_tag}}</label>
             <div class="col-lg-8">
-              <!-- <input class="form-control" type="text" value=""> -->
               {{form.register_no}}
             </div>
           </div>
           <div class="form-group">
-            <label class="col-lg-3 control-label">Class:</label>
+            <label class="col-lg-3 control-label">{{form.batch.label_tag}}</label>
             <div class="col-lg-8">
-              <!-- <input class="form-control" type="text" value=""> -->
               {{form.batch}}
             </div>
           </div>
           <div class="form-group">
-            <label class="col-lg-3 control-label">Roll No:</label>
+            <label class="col-lg-3 control-label">{{form.roll_no.label_tag}}</label>
             <div class="col-lg-8">
-			  {{form.roll_no}}
+			        {{form.roll_no}}
             </div>
           </div>
           <div class="form-group">
-            <label class="col-md-3 control-label">Guardian Name:</label>
+            <label class="col-md-3 control-label">{{form.guardian_name.label_tag}}</label>
             <div class="col-md-8">
               <!-- <input class="form-control" type="text" value=""> -->
               {{form.guardian_name}}
             </div>
           </div>
           <div class="form-group">
-            <label class="col-md-3 control-label">Address:</label>
+            <label class="col-md-3 control-label">{{form.address.label_tag}}</label>
             <div class="col-md-8">
               <!-- <input class="form-control" type="password" value=""> -->
               {{form.address}}
             </div>
           </div>
           <div class="form-group">
-            <label class="col-md-3 control-label">Contact No:</label>
+            <label class="col-md-3 control-label">{{form.contact_no.label_tag}}</label>
             <div class="col-md-8">
               <!-- <input class="form-control" type="password" value=""> -->
               {{form.contact_no}}

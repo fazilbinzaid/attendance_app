@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth import login, authenticate, logout
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -80,7 +80,7 @@ class UserRegisterView(TemplateView):
 
 
 class StudentView(TemplateView):
-	template_name = 'accounts/register.html'
+	template_name = 'accounts/student_edit_bio.html'
 
 	def get_object(self, username):
 		try:
@@ -92,22 +92,25 @@ class StudentView(TemplateView):
 		username = request.user.username
 		student = self.get_object(username)
 		context = self.get_context_data(**kwargs)
-		# print(student)
-		# batches = Batch.objects.all()
 		form = StudentForm(instance=student)
-		# print(form)
 		context['form'] = form
-		# context['batches'] = batches
-		context['student'] = student
 		return render(request, self.template_name, context)
 
 	def post(self, request, *args, **kwargs):
 		username = request.user.username
-		student = self.get_object(username)
-		roll_no = request.POST.get('roll_no', student.roll_no)
-		guardian_name = request.POST.get('guardian_name', student.guardian_name)
-		print(student.roll_no)
-		print(roll_no)
+		instance = self.get_object(username)
+		instance.roll_no = request.POST.get('roll_no', instance.roll_no)
+		instance.guardian_name = request.POST.get('guardian_name', instance.guardian_name)
+		instance.full_name = request.POST.get('full_name', instance.full_name)
+		instance.register_no = request.POST.get('register_no', instance.register_no)
+		instance.address = request.POST.get('address', instance.address)
+		instance.contact_no = request.POST.get('contact_no', instance.contact_no)
+		batch_id = request.POST.get('batch', instance.batch)
+		instance.batch = Batch.objects.get(id=int(batch_id))
+		instance.save()
+		return JsonResponse({
+			'message': 'Data have been updated successfully.',
+			'status': 200
+		})
 
-
-
+# class TeacherView(TemplateView):
