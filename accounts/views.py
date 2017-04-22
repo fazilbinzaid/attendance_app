@@ -16,6 +16,8 @@ class LoginView(TemplateView):
 
 	def get(self, request, *args, **kwargs):
 		context = self.get_context_data(**kwargs)
+		if request.user.is_authenticated():
+			return HttpResponse("DOne")
 		return render(request, self.template_name, context)
 
 	def post(self, request, *args, **kwargs):
