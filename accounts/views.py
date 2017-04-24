@@ -58,26 +58,20 @@ class UserRegisterView(TemplateView):
 		try:
 			return AuthUser.objects.get(username=data['username'])
 		except AuthUser.DoesNotExist:
-			return AuthUser.objects.create_user(data)
+			return AuthUser.objects.create_user(**data)
 
 	def post(self, request, *args, **kwargs):
 		form_data = UserForm(request.POST)
 		context = self.get_context_data(**kwargs)
 		if form_data.is_valid():
-			# print(form_data)
 			username = form_data.cleaned_data['username']
 			email = form_data.cleaned_data['email']
 			password = form_data.cleaned_data['password']
-			# print(form_data.cleaned_data)
 			user_object = self.get_or_create_user(form_data.cleaned_data)
-			# print(user_object)
 			user = authenticate(username=username, password=password)
-			# print('-'*29, user)
-			# if user:
 			login(request, user)
 			Student.objects.create(user=request.user)
-			url = reverse('accounts:student-view')
-			return redirect(url)
+			return redirect(reverse('accounts:student-view'))
 		return HttpResponse('Not.. Done')
 
 
@@ -91,6 +85,8 @@ class StudentView(TemplateView):
 			return None
 
 	def get(self, request, *args, **kwargs):
+		if not request.is_authenticated():
+			return redirect(reverse('accounts:login'))
 		username = request.user.username
 		student = self.get_object(username)
 		context = self.get_context_data(**kwargs)
