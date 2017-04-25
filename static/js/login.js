@@ -8,12 +8,12 @@ $(function() {
 
 	$('#side-menu').metisMenu();
 
-    $.validate({
+  $.validate({
             modules: 'security'
-        })
+        });
 
-	
-	$("#forgot-password-form").hide()
+
+	$("#forgot-password-form").hide();
 
 	$('#forgot-password-form-link').click(function(e) {
 		$("#forgot-password-form").delay(100).fadeIn(100);
@@ -33,5 +33,5 @@ $(function() {
  // 		$("#forgot-password-form").fadeOut(100);
 	// 	e.preventDefault();
 	// });
-	
+
 	});

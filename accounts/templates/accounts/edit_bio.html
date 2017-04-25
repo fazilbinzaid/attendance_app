@@ -23,30 +23,55 @@
         <h3>Personal info</h3>
 
         <form class="form-horizontal" id="user-profile" role="form">{% csrf_token %}
+          {% if form.full_name %}
           <div class="form-group">
             <label class="col-lg-3 control-label">{{form.full_name.label_tag}}</label>
             <div class="col-lg-8">
 			        {{form.full_name}}
             </div>
           </div>
+          {% endif %}
+          {% if form.first_name %}
+          <div class="form-group">
+            <label class="col-lg-3 control-label">{{form.first_name.label_tag}}</label>
+            <div class="col-lg-8">
+			        {{form.first_name}}
+            </div>
+          </div>
+          {% endif %}
+          {% if form.last_name %}
+          <div class="form-group">
+            <label class="col-lg-3 control-label">{{form.last_name.label_tag}}</label>
+            <div class="col-lg-8">
+			        {{form.last_name}}
+            </div>
+          </div>
+          {% endif %}
+          {% if form.register_no %}
           <div class="form-group">
             <label class="col-lg-3 control-label">{{form.register_no.label_tag}}</label>
             <div class="col-lg-8">
               {{form.register_no}}
             </div>
           </div>
+          {% endif %}
+          {% if form.batch %}
           <div class="form-group">
             <label class="col-lg-3 control-label">{{form.batch.label_tag}}</label>
             <div class="col-lg-8">
               {{form.batch}}
             </div>
           </div>
+          {% endif %}
+          {% if form.roll_no %}
           <div class="form-group">
             <label class="col-lg-3 control-label">{{form.roll_no.label_tag}}</label>
             <div class="col-lg-8">
 			        {{form.roll_no}}
             </div>
           </div>
+          {% endif %}
+          {% if form.guardian_name %}
           <div class="form-group">
             <label class="col-md-3 control-label">{{form.guardian_name.label_tag}}</label>
             <div class="col-md-8">
@@ -54,6 +79,8 @@
               {{form.guardian_name}}
             </div>
           </div>
+          {% endif %}
+          {% if form.address %}
           <div class="form-group">
             <label class="col-md-3 control-label">{{form.address.label_tag}}</label>
             <div class="col-md-8">
@@ -61,6 +88,24 @@
               {{form.address}}
             </div>
           </div>
+          {% endif %}
+          {% if form.city %}
+          <div class="form-group">
+            <label class="col-lg-3 control-label">{{form.city.label_tag}}</label>
+            <div class="col-lg-8">
+			        {{form.city}}
+            </div>
+          </div>
+          {% endif %}
+          {% if form.state %}
+          <div class="form-group">
+            <label class="col-lg-3 control-label">{{form.state.label_tag}}</label>
+            <div class="col-lg-8">
+			        {{form.state}}
+            </div>
+          </div>
+          {% endif %}
+          {% if form.contact_no %}
           <div class="form-group">
             <label class="col-md-3 control-label">{{form.contact_no.label_tag}}</label>
             <div class="col-md-8">
@@ -68,12 +113,12 @@
               {{form.contact_no}}
             </div>
           </div>
+          {% endif %}
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
               <input type="submit" class="btn btn-primary" value="Save Changes">
               <span></span>
-              <input type="reset" class="btn btn-default" value="Cancel">
             </div>
           </div>
         </form>

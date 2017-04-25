@@ -39,7 +39,6 @@ class LogoutView(View):
 		return redirect(url)
 
 
-
 class BatchListView(View):
 	template_name = 'accounts/dashboard.html'
 
@@ -54,6 +53,9 @@ class BatchListView(View):
 
 class UserRegisterView(TemplateView):
 
+# To be changed when completed.
+# The current function returns a user even if it exists.
+# TO DO
 	def get_or_create_user(self, data):
 		try:
 			return AuthUser.objects.get(username=data['username'])
@@ -67,52 +69,102 @@ class UserRegisterView(TemplateView):
 			username = form_data.cleaned_data['username']
 			email = form_data.cleaned_data['email']
 			password = form_data.cleaned_data['password']
+			# Check whether the user already exists.
 			user_object = self.get_or_create_user(form_data.cleaned_data)
 			user = authenticate(username=username, password=password)
 			login(request, user)
 			Student.objects.create(user=request.user)
-			return redirect(reverse('accounts:student-view'))
+			return redirect(reverse('accounts:edit-bio-view'))
 		return HttpResponse('Not.. Done')
 
 
-class StudentView(TemplateView):
-	template_name = 'accounts/student_edit_bio.html'
+class EditBioView(TemplateView):
+	template_name = 'accounts/edit_bio.html'
 
 	def get_object(self, username):
 		try:
-			return Student.objects.get(user__username=username)
+			instance = Student.objects.get(user__username=username)
+			form = StudentForm(instance=instance)
+			return {
+				'instance': instance,
+				'form': form
+			}
 		except Student.DoesNotExist:
-			return None
+			try:
+				instance = Teacher.objects.get(user__username=username)
+				form = TeacherForm(instance=instance)
+				return {
+					'instance': instance,
+					'form': form
+				}
+			except Teacher.DoesNotExist:
+				return None
 
 	def get(self, request, *args, **kwargs):
 		if not request.user.is_authenticated():
 			return redirect(reverse('accounts:login'))
 		username = request.user.username
-		student = self.get_object(username)
+		user = self.get_object(username)
 		context = self.get_context_data(**kwargs)
-		form = StudentForm(instance=student)
-		context['form'] = form
+		form = StudentForm(instance=user['instance'])
+		context['form'] = user['form']
 		return render(request, self.template_name, context)
 
 	def post(self, request, *args, **kwargs):
 		username = request.user.username
-		instance = self.get_object(username)
-		instance.roll_no = request.POST.get('roll_no', instance.roll_no)
-		instance.guardian_name = request.POST.get('guardian_name', instance.guardian_name)
-		instance.full_name = request.POST.get('full_name', instance.full_name)
-		instance.register_no = request.POST.get('register_no', instance.register_no)
-		instance.address = request.POST.get('address', instance.address)
-		instance.contact_no = request.POST.get('contact_no', instance.contact_no)
-		batch_id = request.POST.get('batch', instance.batch)
-		instance.batch = Batch.objects.get(id=int(batch_id))
-		instance.save()
+		user = self.get_object(username)
+		instance = user['instance']
+		if type(instance) == Student:
+			instance.roll_no = request.POST.get('roll_no', instance.roll_no)
+			instance.guardian_name = request.POST.get('guardian_name', instance.guardian_name)
+			instance.full_name = request.POST.get('full_name', instance.full_name)
+			instance.register_no = request.POST.get('register_no', instance.register_no)
+			instance.address = request.POST.get('address', instance.address)
+			instance.contact_no = request.POST.get('contact_no', instance.contact_no)
+			batch_id = request.POST.get('batch', instance.batch)
+			instance.batch = Batch.objects.get(id=int(batch_id))
+			instance.save()
+			return JsonResponse({
+				'message': 'Data have been updated successfully.',
+				'status': 200
+			})
+		elif type(instance) == Teacher:
+			instance.first_name = request.POST.get('first_name', instance.first_name)
+			instance.last_name = request.POST.get('last_name', instance.last_name)
+			instance.guardian_name = request.POST.get('guardian_name', instance.guardian_name)
+			instance.contact_no = request.POST.get('contact_no', instance.contact_no)
+			instance.address = request.POST.get('address', instance.address)
+			instance.city = request.POST.get('city', instance.city)
+			instance.state = request.POST.get('state', instance.state)
+			instance.save()
+			return JsonResponse({
+				'message': 'Data have been updated successfully.',
+				'status': 200
+			})
 		return JsonResponse({
-			'message': 'Data have been updated successfully.',
-			'status': 200
+				'message': 'This shit has gone crazy!.',
+				'status': 500
 		})
 
 class TeacherView(TemplateView):
 	template_name = 'accounts/teacher_register.html'
 
 	def get(self, request, *args, **kwargs):
-		return render(request, self.template_name, {})
+		context = self.get_context_data(**kwargs)
+		return render(request, self.template_name, context)
+
+	def post(self, request, *args, **kwargs):
+		user_form = UserForm(request.POST)
+		teacher_form = TeacherForm(request.POST)
+		if user_form.is_valid():
+			username = user_form.cleaned_data['username']
+			password = user_form.cleaned_data['password']
+			user_object = AuthUser.objects.create_user(**user_form.cleaned_data)
+			user = authenticate(username=username, password=password)
+			login(request, user)
+		if teacher_form.is_valid():
+			Teacher.objects.create(user=request.user, **teacher_form.cleaned_data)
+			# Redirect to DashBoard.Now it is to edit Bio View.
+			# TO DO
+			return redirect(reverse('accounts:edit-bio-view'))
+		return HttpResponse("Not DONE!")

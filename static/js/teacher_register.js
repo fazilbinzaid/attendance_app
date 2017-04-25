@@ -1,0 +1,8 @@
+
+$(function() {
+
+  $.validate({
+    modules: 'security'
+  });
+
+});
