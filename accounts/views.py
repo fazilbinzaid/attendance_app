@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from accounts.models import Teacher, Student, Batch, AuthUser
-from accounts.forms import UserForm, StudentForm
+from accounts.forms import UserForm, StudentForm, TeacherForm
 
 # Create your views here.
 
@@ -85,7 +85,7 @@ class StudentView(TemplateView):
 			return None
 
 	def get(self, request, *args, **kwargs):
-		if not request.is_authenticated():
+		if not request.user.is_authenticated():
 			return redirect(reverse('accounts:login'))
 		username = request.user.username
 		student = self.get_object(username)
@@ -111,4 +111,8 @@ class StudentView(TemplateView):
 			'status': 200
 		})
 
-# class TeacherView(TemplateView):
+class TeacherView(TemplateView):
+	template_name = 'accounts/teacher_register.html'
+
+	def get(self, request, *args, **kwargs):
+		return render(request, self.template_name, {})

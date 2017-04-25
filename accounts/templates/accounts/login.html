@@ -31,12 +31,13 @@
                         </div>
                         <div class="etc-login-form">
                             <p>forgot your password? <a id="forgot-password-form-link" href="#">click here</a></p>
-                            <!-- <p>new user? <a id="register-form-link" href="{%url 'accounts:register'%}">create new account</a></p> -->
+                            <!-- <p>new user? <a id="register-form-link" href="">create new account</a></p> -->
                         </div>
                     </form>
                 </div>
                 <div class="col-lg-5 col-lg-offset-1" id="register-form">
-                    <form id="registration" class="text-left" action="{%url 'accounts:register'%}" method="post">{% csrf_token %}
+                    <form id="registration" class="text-left" action="{%url 'accounts:student-register'%}" method="post">
+                        {% csrf_token %}
                         <div class="logo">Register</div>{{ form.non_field_errors }}
                         <div class="login-form-main-message"></div>
                         <div class="main-login-form">
@@ -103,7 +104,7 @@
                         </div>
                         <div class="etc-login-form">
                             <p>already have an account? <a id="login-form-link" href="#">login here</a></p>
-                            <!-- <p>new user? <a id="register-form-link" href="{%url 'accounts:register'%}">create new account</a></p> -->
+                            <!-- <p>new user? <a id="register-form-link" href="">create new account</a></p> -->
                         </div>
                     </form>
                 </div>
