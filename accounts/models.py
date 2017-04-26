@@ -38,7 +38,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Teacher(models.Model):
-    user = models.OneToOneField(AuthUser, primary_key=True)
+    user = models.OneToOneField(AuthUser, related_name='teacher', primary_key=True)
     first_name = models.CharField(max_length=32, null=True, blank=True)
     last_name = models.CharField(max_length=32, null=True, blank=True)
     guardian_name = models.CharField(max_length=30, null=True, blank=True)
@@ -52,7 +52,7 @@ class Teacher(models.Model):
 
 
 class Batch(models.Model):
-    name = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=20, unique=True)
     batch_teacher = models.OneToOneField(Teacher, related_name='batch', null=True, blank=True)
     division = models.CharField(max_length=2, null=True, blank=True)
     strength = models.IntegerField()

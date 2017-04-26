@@ -13,13 +13,11 @@ from accounts.forms import UserForm, StudentForm, TeacherForm
 
 def username_check(request):
 	if request.is_ajax():
-		check = request.GET.get('username', None)
+		check = request.GET.get('username')
 		if check:
 			if AuthUser.objects.filter(username=check).exists():
 				return HttpResponse(False)
 			return HttpResponse(True)
-		return HttpResponse(False)
-	return redirect(reverse('accounts:login'))
 
 
 class LoginView(TemplateView):
@@ -27,9 +25,10 @@ class LoginView(TemplateView):
 
 	def get(self, request, *args, **kwargs):
 		context = self.get_context_data(**kwargs)
-		if request.user.is_authenticated():
-			return HttpResponse("DOne")
-		return render(request, self.template_name, context)
+		if not request.user.is_authenticated():
+			return render(request, self.template_name, context)
+		elif request.user.teacher:
+			return redirect(reverse('accounts:dashboard-teacher'))
 
 	def post(self, request, *args, **kwargs):
 		post = request.POST
@@ -38,7 +37,8 @@ class LoginView(TemplateView):
 		user = authenticate(username=username, password=password)
 		if user:
 			login(request, user)
-			return HttpResponse('Done')
+			if request.user.teacher:
+				return redirect(reverse('accounts:dashboard-teacher'))
 		return HttpResponse('Not Done')
 
 
@@ -157,7 +157,7 @@ class EditBioView(TemplateView):
 				'status': 500
 		})
 
-class TeacherView(TemplateView):
+class StaffRegisterView(TemplateView):
 	template_name = 'accounts/teacher_register.html'
 
 	def get(self, request, *args, **kwargs):
@@ -177,5 +177,20 @@ class TeacherView(TemplateView):
 			Teacher.objects.create(user=request.user, **teacher_form.cleaned_data)
 			# Redirect to DashBoard.Now it is to edit Bio View.
 			# TO DO
-			return redirect(reverse('accounts:edit-bio-view'))
+			return redirect(reverse('accounts:dashboard-teacher'))
 		return HttpResponse("Not DONE!")
+
+
+class DashBoardView(TemplateView):
+	template_name = 'accounts/dashboard-teacher.html'
+
+	def get_object(self, username):
+		return Teacher.objects.get(user__username=username)
+
+	def get(self, request, *args, **kwargs):
+		username = request.user.username
+		user = self.get_object(username)
+		batches = Batch.objects.filter(id__in=user.subjects.values_list('batch'))
+		context = self.get_context_data(**kwargs)
+		context['batches'] = batches
+		return render(request, self.template_name, context)

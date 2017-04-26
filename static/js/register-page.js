@@ -18,7 +18,7 @@ $(function() {
 			error: function(data) {
         console.log(data);
 				$(".alert").append('<div id="alert" class="alert text-center alert-danger alert-dismissable">' +
-												 		"<strong>" + data + "</strong></div>");
+												 		"<strong>" + data.message + "</strong></div>");
 			}
 		});
 	});

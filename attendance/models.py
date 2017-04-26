@@ -17,7 +17,7 @@ class Subject(models.Model):
         unique_together = ('name', 'batch', 'teacher')
 
     def __str__(self):
-        return [item[1] for item in self.SUBJECTS if item[0] == self.name][0]
+        return "%s - %s" % ([item[1] for item in self.SUBJECTS if item[0] == self.name][0], self.batch)
 
 
 class Hour(AbstractTimeStampModel):

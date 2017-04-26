@@ -1,0 +1,23 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="col-lg-10">
+  <h1>DashBoard</h1>
+  {% for batch in batches %}
+
+  {% endfor %}
+
+
+</a>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+  $("#side-menu").metisMenu();
+</script>
+{% endblock %}

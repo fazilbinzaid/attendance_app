@@ -22,15 +22,15 @@
 </head>
 
 <body>
-  
+
   {% if request.user.is_authenticated %}
   {% include 'accounts/nav_bar.html' %}
   {% endif %}
-  
+
   <div class="col-lg-10 col-lg-offset-2">
     {% block content %}{% endblock %}
   </div>
-      
+
   <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'bower_components/jquery-form-validator/form-validator/jquery.form-validator.min.js' %}"></script>
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -41,4 +41,3 @@
   {% block javascript %}{% endblock %}
 
 </body>
-
