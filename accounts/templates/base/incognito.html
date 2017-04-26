@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Attendance App</title>
+    <title>Attendance Management</title>
 
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
@@ -22,21 +22,11 @@
 </head>
 
 <body>
-  <div id="wrapper">
-    {% if request.user.is_authenticated %}
-    {% include 'accounts/nav_bar.html' %}
-    {% endif %}
-    <div id="page-wrapper" style="background-color: #f8f8f8;">
-      <div class="container-fluid">
-        {% block content %}{% endblock %}
-      </div>
-    </div>
-  </div>
-
+  {% block content %}{% endblock %}
 
 
   <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
-  <script src="{% static 'bower_components/jquery-form-validator/form-validator/jquery.form-validator.min.js' %}"></script>
+  <script src="{% static 'bower_components/jquery-form-validator/form-validator/jquery.form-validator.js' %}"></script>
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
   <!-- FOR NAVIGATION BAR -->

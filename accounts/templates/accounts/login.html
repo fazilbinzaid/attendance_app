@@ -1,14 +1,14 @@
-{% extends "accounts/base.html" %}
+{% extends "base/incognito.html" %}
 {% load static %}
 
 {% block content %}
 
 <body>
-    <div class="col-lg-10" style="padding:50px 0">
+    <div class="" style="padding:50px 0">
     <br><br><br>
         <div>
             <div class="login-form-1">
-                <div class="col-lg-5" id="login-form" >
+                <div class="col-lg-3 col-lg-offset-2" id="login-form" >
                     <form class="text-left" action="{%url 'accounts:login'%}" method="post">{% csrf_token %}
                         <div class="logo">Login</div>
                         <div class="login-form-main-message"></div>
@@ -31,11 +31,11 @@
                         </div>
                         <div class="etc-login-form">
                             <p>forgot your password? <a id="forgot-password-form-link" href="#">click here</a></p>
-                            <!-- <p>new user? <a id="register-form-link" href="">create new account</a></p> -->
+                            <p>for teachers, <a href="{% url 'accounts:staff-register' %}">create new account here</a></p>
                         </div>
                     </form>
                 </div>
-                <div class="col-lg-5 col-lg-offset-1" id="register-form">
+                <div class="col-lg-3 col-lg-offset-2" id="register-form">
                     <form id="registration" class="text-left" action="{%url 'accounts:student-register'%}" method="post">
                         {% csrf_token %}
                         <div class="logo">Register</div>{{ form.non_field_errors }}
@@ -44,7 +44,7 @@
                             <div class="login-group">
                                 <div id="username" class="form-group">
                                     <label for="id_username" class="sr-only">Username</label>
-                                    <input type="text" class="form-control" id="id_username" name="username" placeholder="username" data-validation="length" data-validation-length="min6">
+                                    <input type="text" class="form-control" id="id_username" name="username" placeholder="username">
                                     <!-- {{form.username}} -->
                                 </div>
                                 <div class="form-group">
@@ -86,7 +86,7 @@
                     </form>
                 </div>
 
-                <div class="col-lg-4 col-lg-offset-2" id="forgot-password-form" >
+                <div class="col-lg-4 col-lg-offset-4" id="forgot-password-form" >
                     <form class="text-left" method="post">{% csrf_token %}
                         <div class="logo">Forgot password?</div>
                         <div class="etc-login-form">

@@ -1,3 +1,4 @@
+{% extends "base/incognito.html" %}
 {% load static %}
 
 {%block head%}
@@ -12,12 +13,6 @@
     <meta name="author" content="">
 
     <title>Attendance App</title>
-
-    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
-    <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'css/login.css' %}" rel="stylesheet">
-
 
 </head>
 {%endblock%}
@@ -186,8 +181,5 @@
 {% endblock %}
 
 {% block javascript %}
-  <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
-  <script src="{% static 'bower_components/jquery-form-validator/form-validator/jquery.form-validator.min.js' %}"></script>
-  <script src="{% static 'js/bootstrap.min.js' %}"></script>
   <script src="{% static 'js/teacher_register.js' %}"></script>
 {% endblock %}
