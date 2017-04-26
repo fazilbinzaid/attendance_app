@@ -61,7 +61,7 @@ class Batch(models.Model):
         verbose_name_plural = 'batches'
 
     def __str__(self):
-        return "%s - %s" % (self.name, self.division)
+        return self.name
 
 
 class Student(models.Model):

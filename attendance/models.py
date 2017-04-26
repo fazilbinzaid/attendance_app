@@ -36,4 +36,4 @@ class Hour(AbstractTimeStampModel):
 
     def __str__(self):
         code = [item[1] for item in self.HOURS if item[0] == self.code][0]
-        return "%s - %s" % (self.student, code)
+        return "%s - %s - %s" % (self.student, self.student.batch, code)

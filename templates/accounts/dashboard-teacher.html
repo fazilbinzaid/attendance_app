@@ -1,0 +1,50 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div>
+  <div class="page-title-breadcrumb" style="background-color: #f8f8f8;">
+      <div class="page-header pull-left">
+          <div class="page-title">
+              Dashboard</div>
+      </div>
+      <ol class="breadcrumb page-breadcrumb pull-right">
+          <li><i class="fa fa-home"></i>&nbsp;<a href="#">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+          <li class="hidden"><a href="#">Dashboard</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+          <li class="active">Dashboard</li>
+      </ol>
+      <div class="clearfix">
+      </div>
+  </div>
+
+  <div class="page-content">
+    <h3>Classes</h3>
+    <div id="sum_box" class="row mbl">
+      {% for batch in batches %}
+        <div class="col-lg-4 col-md-3">
+            <div class="panel visit db mbm">
+                <div class="panel-body">
+                    <a href="#"><p class="icon">
+                        <i class="icon fa fa-group"></i>
+                    </p>
+                    <h4 class="value">
+                        <span>{{batch.strength}}</span></h4>
+                    <p class="description">
+                        {{batch}} - {% for subject in user.subjects.all  %}{% if subject.batch == batch %}{{ subject.name }}{% endif %}{% endfor %}</p></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+  $("#side-menu").metisMenu();
+</script>
+{% endblock %}

@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from accounts.models import Teacher, Student, Batch, AuthUser
 from accounts.forms import UserForm, StudentForm, TeacherForm
+from attendance.models import Subject, Hour
 
 # Create your views here.
 
@@ -27,8 +28,7 @@ class LoginView(TemplateView):
 		context = self.get_context_data(**kwargs)
 		if not request.user.is_authenticated():
 			return render(request, self.template_name, context)
-		elif request.user.teacher:
-			return redirect(reverse('accounts:dashboard-teacher'))
+		return redirect(reverse('accounts:dashboard-teacher'))
 
 	def post(self, request, *args, **kwargs):
 		post = request.POST
@@ -37,7 +37,7 @@ class LoginView(TemplateView):
 		user = authenticate(username=username, password=password)
 		if user:
 			login(request, user)
-			if request.user.teacher:
+			if request.user.is_authenticated():
 				return redirect(reverse('accounts:dashboard-teacher'))
 		return HttpResponse('Not Done')
 
@@ -182,15 +182,28 @@ class StaffRegisterView(TemplateView):
 
 
 class DashBoardView(TemplateView):
-	template_name = 'accounts/dashboard-teacher.html'
+	# template_name = 'accounts/dashboard-teacher.html'
 
 	def get_object(self, username):
-		return Teacher.objects.get(user__username=username)
+		try:
+			return Teacher.objects.get(user__username=username)
+		except Teacher.DoesNotExist:
+			try:
+				return Student.objects.get(user__username=username)
+			except Student.DoesNotExist:
+				return HttpResponse("Not Found!.")
+
 
 	def get(self, request, *args, **kwargs):
+		context = self.get_context_data(**kwargs)
 		username = request.user.username
 		user = self.get_object(username)
-		batches = Batch.objects.filter(id__in=user.subjects.values_list('batch'))
-		context = self.get_context_data(**kwargs)
-		context['batches'] = batches
-		return render(request, self.template_name, context)
+		context['user'] = user
+		if type(user) == Teacher:
+			batches = Batch.objects.filter(id__in=user.subjects.values_list('batch'))
+			context['batches'] = batches
+			return render(request, 'accounts/dashboard-teacher.html', context)
+		elif type(user) == Student:
+			subjects = Subject.objects.filter(id__in=user.hours.values_list('subject'))
+			context['subjects'] = subjects
+			return render(request, 'accounts/dashboard-student.html', context)
