@@ -1,6 +1,7 @@
 from django.conf.urls import url, include
 from accounts.views import (LoginView, UserRegisterView, LogoutView,
 							EditBioView, TeacherView,
+							username_check,
 							)
 
 urlpatterns = [
@@ -10,5 +11,6 @@ urlpatterns = [
 	url(r'^register/$', UserRegisterView.as_view(), name='student-register'),
 	url(r'^staff-register/$', TeacherView.as_view(), name='staff-register'),
 	url(r'^user-profile/$', EditBioView.as_view(), name='edit-bio-view'),
+	url(r'^check-username/$', username_check, name='check-username'),
 
 ]

@@ -53,6 +53,7 @@ class Teacher(models.Model):
 
 class Batch(models.Model):
     name = models.CharField(max_length=10, unique=True)
+    batch_teacher = models.OneToOneField(Teacher, related_name='batch', null=True, blank=True)
     division = models.CharField(max_length=2, null=True, blank=True)
     strength = models.IntegerField()
 

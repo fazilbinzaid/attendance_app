@@ -11,6 +11,17 @@ from accounts.forms import UserForm, StudentForm, TeacherForm
 
 # Create your views here.
 
+def username_check(request):
+	if request.is_ajax():
+		check = request.GET.get('username', None)
+		if check:
+			if AuthUser.objects.filter(username=check).exists():
+				return HttpResponse(False)
+			return HttpResponse(True)
+		return HttpResponse(False)
+	return redirect(reverse('accounts:login'))
+
+
 class LoginView(TemplateView):
 	template_name = 'accounts/login.html'
 
