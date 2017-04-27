@@ -37,11 +37,19 @@ class BatchHourView(TemplateView):
         return render(request, self.template_name, context)
 
     def post(self, request, pk, *args, **kwargs):
-        batch_id = request.POST.get('batch')
-        batch = self.get_object(batch_id, Batch)
+        subject_id = request.POST.get('subject')
+        subject = self.get_object(subject_id, Subject)
         hour_id = request.POST.get('hour')
-        print(hour_id)
+        # print(hour_id)
         data = json.loads(request.POST.get('attendance'))
-        print(data)
+        # print(data)
         for student_id in data:
-            pass
+            # print(data[student_id])
+            student = self.get_object(student_id, Student)
+            # print(hour_id, subject)
+            hour = Hour.objects.create(code=hour_id, subject=subject, student=student)
+            if int(data[student_id]):
+                hour.is_present = True
+                print(student)
+        print(subject.hours.all())
+        return HttpResponse("Done!")
