@@ -28,7 +28,7 @@ class LoginView(TemplateView):
 		context = self.get_context_data(**kwargs)
 		if not request.user.is_authenticated():
 			return render(request, self.template_name, context)
-		return redirect(reverse('accounts:dashboard-teacher'))
+		return redirect(reverse('accounts:dashboard'))
 
 	def post(self, request, *args, **kwargs):
 		post = request.POST
@@ -38,7 +38,7 @@ class LoginView(TemplateView):
 		if user:
 			login(request, user)
 			if request.user.is_authenticated():
-				return redirect(reverse('accounts:dashboard-teacher'))
+				return redirect(reverse('accounts:dashboard'))
 		return HttpResponse('Not Done')
 
 
@@ -48,18 +48,6 @@ class LogoutView(View):
 		logout(request)
 		url = reverse('accounts:login')
 		return redirect(url)
-
-
-class BatchListView(View):
-	template_name = 'accounts/dashboard.html'
-
-	def get_context_data(self, **kwargs):
-		return super(BatchListView, self).get_context_data(**kwargs)
-
-	def get(self, request, *args, **kwargs):
-		context = self.get_context_data(**kwargs)
-		context['batches'] = Batch.objects.all()
-		return render(request, self.template_name, context)
 
 
 class UserRegisterView(TemplateView):
@@ -90,7 +78,7 @@ class UserRegisterView(TemplateView):
 
 
 class EditBioView(TemplateView):
-	template_name = 'accounts/edit_bio.html'
+	template_name = 'accounts/edit-bio.html'
 
 	def get_object(self, username):
 		try:
@@ -128,7 +116,8 @@ class EditBioView(TemplateView):
 		if type(instance) == Student:
 			instance.roll_no = request.POST.get('roll_no', instance.roll_no)
 			instance.guardian_name = request.POST.get('guardian_name', instance.guardian_name)
-			instance.full_name = request.POST.get('full_name', instance.full_name)
+			instance.first_name = request.POST.get('first_name', instance.first_name)
+			instance.last_name = request.POST.get('last_name', instance.last_name)
 			instance.register_no = request.POST.get('register_no', instance.register_no)
 			instance.address = request.POST.get('address', instance.address)
 			instance.contact_no = request.POST.get('contact_no', instance.contact_no)
@@ -158,7 +147,7 @@ class EditBioView(TemplateView):
 		})
 
 class StaffRegisterView(TemplateView):
-	template_name = 'accounts/teacher_register.html'
+	template_name = 'accounts/register-teacher.html'
 
 	def get(self, request, *args, **kwargs):
 		context = self.get_context_data(**kwargs)
@@ -175,9 +164,7 @@ class StaffRegisterView(TemplateView):
 			login(request, user)
 		if teacher_form.is_valid():
 			Teacher.objects.create(user=request.user, **teacher_form.cleaned_data)
-			# Redirect to DashBoard.Now it is to edit Bio View.
-			# TO DO
-			return redirect(reverse('accounts:dashboard-teacher'))
+			return redirect(reverse('accounts:dashboard'))
 		return HttpResponse("Not DONE!")
 
 

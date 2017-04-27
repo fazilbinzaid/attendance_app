@@ -44,7 +44,7 @@ class StudentForm(forms.ModelForm):
 
 	class Meta:
 		model = Student
-		fields = ('batch', 'full_name', 'roll_no',
+		fields = ('batch', 'first_name', 'last_name', 'roll_no',
 				  'register_no', 'guardian_name', 'contact_no',
 				  'address',)
 

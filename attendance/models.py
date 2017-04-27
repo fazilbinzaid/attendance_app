@@ -9,15 +9,19 @@ class Subject(models.Model):
 
     SUBJECTS = (('EP', 'Physics'), ('EC', 'Chemistry'), ('EM', 'Mathematics'), ('EMM', 'Mechanics'))
 
-    name = models.CharField(max_length=3, choices=SUBJECTS)
+    code = models.CharField(max_length=3, choices=SUBJECTS)
     batch = models.ForeignKey(Batch, related_name='subjects', null=True, blank=True)
     teacher = models.ForeignKey(Teacher, related_name='subjects', null=True, blank=True)
 
     class Meta:
-        unique_together = ('name', 'batch', 'teacher')
+        unique_together = ('code', 'batch', 'teacher')
+
+    @property
+    def name(self):
+        return [item[1] for item in self.SUBJECTS if item[0] == self.code][0]
 
     def __str__(self):
-        return "%s - %s" % ([item[1] for item in self.SUBJECTS if item[0] == self.name][0], self.batch)
+        return "%s - %s" % ([item[1] for item in self.SUBJECTS if item[0] == self.code][0], self.batch)
 
 
 class Hour(AbstractTimeStampModel):
@@ -34,6 +38,13 @@ class Hour(AbstractTimeStampModel):
     class Meta:
         unique_together = ('student', 'date', 'code')
 
+    @property
+    def hours(self):
+        return [item[1] for item in self.HOURS]
+
+    @property
+    def index(self):
+        return [item[1] for item in self.HOURS if item[0] == self.code][0]
+
     def __str__(self):
-        code = [item[1] for item in self.HOURS if item[0] == self.code][0]
-        return "%s - %s - %s" % (self.student, self.student.batch, code)
+        return "%s - %s - %s" % (self.student, self.student.batch, [item[1] for item in self.HOURS if item[0] == self.code][0])

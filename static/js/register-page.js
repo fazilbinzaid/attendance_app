@@ -23,14 +23,4 @@ $(function() {
 		});
 	});
 
-	function objectifyForm(formArray) {
-		var returnArray = {};
-		for (var i=0;i<formArray.length;i++) {
-			if (formArray[i].value) {
-				returnArray[formArray[i].name] = formArray[i].value;
-			}
-		}
-		return returnArray;
-	}
-
 });

@@ -13,6 +13,6 @@ urlpatterns = [
 	url(r'^staff-register/$', StaffRegisterView.as_view(), name='staff-register'),
 	url(r'^user-profile/$', EditBioView.as_view(), name='edit-bio-view'),
 	url(r'^check-username/$', username_check, name='check-username'),
-	url(r'^dashboard/$', DashBoardView.as_view(), name='dashboard-teacher'),	
+	url(r'^dashboard/$', DashBoardView.as_view(), name='dashboard'),	
 
 ]

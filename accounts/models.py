@@ -67,7 +67,8 @@ class Batch(models.Model):
 class Student(models.Model):
     user = models.OneToOneField(AuthUser, primary_key=True)
     batch = models.ForeignKey(Batch, related_name='students', null=True, blank=True)
-    full_name = models.CharField(max_length=30, null=True, blank=True)
+    first_name = models.CharField(max_length=30, null=True, blank=True)
+    last_name = models.CharField(max_length=30, null=True, blank=True)
     roll_no = models.IntegerField(null=True, blank=True)
     register_no = models.IntegerField(null=True, blank=True)
     guardian_name = models.CharField(max_length=30, null=True, blank=True)

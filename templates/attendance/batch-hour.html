@@ -1,0 +1,74 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="">
+  <div class="page-title-breadcrumb" style="background-color: #f8f8f8;">
+      <div class="page-header pull-left">
+          <div class="page-title">
+              Class {{ batch }}</div>
+      </div>
+      <ol class="breadcrumb page-breadcrumb pull-right">
+          <li><i class="fa fa-home"></i>&nbsp;<a href="{% url 'accounts:dashboard' %}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+          <li class="hidden"><a href="#">Class {{ batch }}</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+          <li class="active">Class {{ batch }}</li>
+      </ol>
+      <div class="clearfix">
+      </div>
+  </div>
+  <div class="page-content">
+    <div class="">
+      <form id="attendance" class="" action="" method="post">{% csrf_token %}
+        <div class="row">
+          <div class="col-md-4 pull-left">
+            <select class="selectpicker" name="hour" id="id_batch">
+              <option value="">-----</option>
+              {% for hour in hours %}
+              <option value="{{ forloop.counter }}">{{ hour }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-4 pull-right">
+            <select class="selectpicker" name="batch" id="id_batch">
+              {% for subject in subjects %}
+              <option value="{{ subject.id }}">{{ subject.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <table id="mytable" class="table table-bordred table-striped">
+
+                           <thead>
+                           <th><input type="checkbox" id="checkall" /></th>
+                           <th>Roll No</th>
+                           <th>Name</th>
+                           </thead>
+            <tbody>
+            {% for student in students %}
+            <tr>
+            <td>
+              <input type="hidden" id="id_is_present" name="{{ student.pk }}" value="0"/>
+              <input type="checkbox" id="id_is_present" name="{{ student.pk }}" value="1"/>
+            </td>
+            <td>{{ student.roll_no }}</td>
+            <td>{{ student.first_name }} {{ student.last_name }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <button type="submit" class="btn btn-success" name="button">Submit</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/teacher-batch-hour.js' %}"></script>
+{% endblock %}
