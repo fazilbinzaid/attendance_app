@@ -33,7 +33,7 @@ class Hour(AbstractTimeStampModel):
     subject = models.ForeignKey(Subject, related_name='hours', null=True, blank=True)
     is_present = models.BooleanField(default=False)
     student = models.ForeignKey(Student, related_name='hours', null=True, blank=True)
-    date = models.DateField(auto_now=True)
+    date = models.DateField(auto_now_add=True)
 
     class Meta:
         unique_together = ('student', 'date', 'code')
