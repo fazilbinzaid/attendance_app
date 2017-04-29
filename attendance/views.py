@@ -83,3 +83,20 @@ class BatchDetailView(TemplateView):
         dates = subject.hours.filter(student__batch=batch).values_list('date').distinct()
         context['dates'] = dates
         return render(request, self.template_name, context)
+
+
+class EditAttendanceView(TemplateView):
+    template_name = 'attendance/edit-attendance.html'
+
+# TO DO
+# Using a calendar get every attendance ever registered.
+# But can only edit those registered within couple of days.
+    def get_context_data(self, **kwargs):
+        context = super(EditAttendanceView, self).get_context_data(**kwargs)
+        teacher = Teacher.objects.get(user__username=self.request.user.username)
+        context['teacher'] = teacher
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        pass
