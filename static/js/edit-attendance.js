@@ -56,9 +56,10 @@ $(function(){
             }
 
           }
-          $("#edit-att-form").append('<button type="submit" class="btn btn-success" name="button">Edit now!</button>');
+          $("#edit-att-form").append('<button type="submit" id="att_button" class="btn btn-success" name="button">Edit now!</button>');
         }
         else {
+          $("#att_button").hide();
           for (var i=0;i<data.results.length;i++) {
             $("#mytable tbody").append('<tr><td>' + attendance(data.results[i].is_present) + '</td>' +
                                     '<td>' + data.results[i].code + '</td>' +

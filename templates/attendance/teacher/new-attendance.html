@@ -11,8 +11,8 @@
       </div>
       <ol class="breadcrumb page-breadcrumb pull-right">
           <li><i class="fa fa-home"></i>&nbsp;<a href="{% url 'accounts:dashboard' %}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-          <li class="hidden"><a href="#">Class {{ batch }}</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-          <li class="active">Class {{ batch }}</li>
+          <li><a href="{% url 'attendance:batch-detail' batch.id %}">Class {{ batch }}</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+          <li class="active">New Attendance</li>
       </ol>
       <div class="clearfix">
       </div>

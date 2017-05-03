@@ -148,7 +148,7 @@ class EditBioView(TemplateView):
 		})
 
 class StaffRegisterView(TemplateView):
-	template_name = 'accounts/register-teacher.html'
+	template_name = 'accounts/staff-register.html'
 
 	def get(self, request, *args, **kwargs):
 		context = self.get_context_data(**kwargs)

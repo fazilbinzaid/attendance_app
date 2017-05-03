@@ -11,16 +11,16 @@
       </div>
       <ol class="breadcrumb page-breadcrumb pull-right">
           <li><i class="fa fa-home"></i>&nbsp;<a href="{% url 'accounts:dashboard' %}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-          <li class="hidden"><a href="#">Class {{ batch }}</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-          <li class="active">Class {{ batch }}</li>
+          <li><a href="{% url 'attendance:batch-detail' batch.id %}">Class {{ batch }}</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+          <li class="active">History</li>
       </ol>
       <div class="clearfix">
       </div>
   </div>
   <div class="">
-    <h3>History</h3>
     <div class="page-content">
       <div class="container">
+        <h3>Select a date and hit go!!</h3>
         <div class="alert"></div>
         <div class="row">
             <form id="get-date" method="">

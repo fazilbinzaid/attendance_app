@@ -187,7 +187,7 @@ label.form-invalid:after {
 .mam {
   margin-bottom: 10px !important;
 }
-.panel {
+.custom-panel {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
   -webkit-border-radius: 0 !important;
@@ -316,4 +316,7 @@ li [class*=" icon-"].icon-large {
 }
 input[type="checkbox"] {
   transform:scale(2, 2);
+}
+.custom-panel-padding {
+  padding: 35px;
 }

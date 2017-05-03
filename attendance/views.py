@@ -16,7 +16,7 @@ import json
 # Create your views here.
 
 class NewAttendanceView(TemplateView):
-    template_name = 'attendance/new-attendance.html'
+    template_name = 'attendance/teacher/new-attendance.html'
 
     def get_object(self, pk, model):
         try:
@@ -59,7 +59,7 @@ class NewAttendanceView(TemplateView):
 
 
 class BatchDetailView(TemplateView):
-    template_name = "attendance/batch-detail.html"
+    template_name = "attendance/teacher/batch-detail.html"
 
     def get_object(self, pk, model):
         try:
@@ -112,13 +112,13 @@ def get_history_data(request):
                                                       'student__roll_no',
                                                       'student__first_name',
                                                       'student__last_name',
-                                                      )
+                                                      ).order_by('student__roll_no')
         return JsonResponse({'results': list(hours)})
 
 
 
 class EditAttendanceView(TemplateView):
-    template_name = 'attendance/edit-attendance.html'
+    template_name = 'attendance/teacher/edit-attendance.html'
 
     def get_object(self, pk, model):
         try:
@@ -155,7 +155,7 @@ class EditAttendanceView(TemplateView):
         day_id, month_id, year_id = data.get('day'), data.get('month'), data.get('year')
         att_data = json.loads(request.POST.get('attendance'))
         batch = Batch.objects.get(pk=batch_id)
-        subject = Subject.objects.get(teacher=teacher, batch=batch)
+        subject = teacher.subjects.get(batch=batch)
         for student_id in att_data:
             student = self.get_object(student_id, Student)
             hour_object = Hour.objects.get(date__day=day_id,
