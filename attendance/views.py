@@ -71,6 +71,8 @@ class BatchDetailView(TemplateView):
         context = super(BatchDetailView, self).get_context_data(**kwargs)
         teacher = Teacher.objects.get(user__username=self.request.user.username)
         context['teacher'] = teacher
+        hour_nos = Hour.HOURS
+        context['hour_nos'] = hour_nos
         return context
 
     def get(self, request, pk, *args, **kwargs):
@@ -85,8 +87,44 @@ class BatchDetailView(TemplateView):
         return render(request, self.template_name, context)
 
 
+def get_history_data(request):
+    if request.is_ajax():
+        data = request.GET
+        print(data)
+        batch_id = data.get("batch_id")
+        year = data.get("year")
+        month = data.get("month")
+        day = data.get("day")
+        hour = data.get("hour")
+        print(batch_id, year, month, day)
+        batch = Batch.objects.get(id=batch_id)
+        subject = batch.subjects.get(teacher=Teacher.objects.get(user__username=request.user.username))
+        print(subject)
+        hours = Hour.objects.filter(date__year=year,
+                                    date__month=month,
+                                    date__day=day,
+                                    student__batch=batch,
+                                    subject=subject,
+                                    code=hour).values(
+                                                      'code',
+                                                      'is_present',
+                                                      'student__pk',
+                                                      'student__roll_no',
+                                                      'student__first_name',
+                                                      'student__last_name',
+                                                      )
+        return JsonResponse({'results': list(hours)})
+
+
+
 class EditAttendanceView(TemplateView):
     template_name = 'attendance/edit-attendance.html'
+
+    def get_object(self, pk, model):
+        try:
+            return model.objects.get(pk=pk)
+        except model.DoesNotExist:
+            raise Http404
 
 # TO DO
 # Using a calendar get every attendance ever registered.
@@ -95,8 +133,18 @@ class EditAttendanceView(TemplateView):
         context = super(EditAttendanceView, self).get_context_data(**kwargs)
         teacher = Teacher.objects.get(user__username=self.request.user.username)
         context['teacher'] = teacher
+        hour_nos = Hour.HOURS
+        context['hour_nos'] = hour_nos
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, pk, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        pass
+        teacher = context['teacher']
+        subject = Subject.objects.get(teacher=teacher)
+        batch = self.get_object(pk, Batch)
+        context['subject'] = subject
+        context['batch'] = batch
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST)

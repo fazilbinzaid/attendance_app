@@ -122,7 +122,8 @@ class EditBioView(TemplateView):
 			instance.address = request.POST.get('address', instance.address)
 			instance.contact_no = request.POST.get('contact_no', instance.contact_no)
 			batch_id = request.POST.get('batch', instance.batch)
-			instance.batch = Batch.objects.get(id=int(batch_id))
+			if batch_id:
+				instance.batch = Batch.objects.get(id=int(batch_id))
 			instance.save()
 			return JsonResponse({
 				'message': 'Data have been updated successfully.',

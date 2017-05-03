@@ -1,0 +1,88 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="">
+  <div class="page-title-breadcrumb" style="background-color: #f8f8f8;">
+      <div class="page-header pull-left">
+          <div class="page-title">
+              Class {{ batch }}</div>
+      </div>
+      <ol class="breadcrumb page-breadcrumb pull-right">
+          <li><i class="fa fa-home"></i>&nbsp;<a href="{% url 'accounts:dashboard' %}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+          <li class="hidden"><a href="#">Class {{ batch }}</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+          <li class="active">Class {{ batch }}</li>
+      </ol>
+      <div class="clearfix">
+      </div>
+  </div>
+  <div class="">
+    <h3>History</h3>
+    <div class="page-content">
+      <div class="container">
+        <div class="row">
+            <form id="get-date" method="">
+              <div class='col-sm-2'>
+                  <div class="form-group">
+                    <div class="input-group date" data-provide="datepicker">
+                      <input type="text" class="form-control" id="history" placeholder="Pick a Date..">
+                      <div class="input-group-addon">
+                          <span class="glyphicon glyphicon-th"></span>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <button type="submit" class="btn btn-default" name="button">Go</button>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <select class="selectpicker" name="batch" id="id_for_batch">
+                  <option value="{{ batch.id }}">{{batch}}</option>
+                </select>
+              </div>
+              <div class="col-sm-1 col-sm-offset-1">
+                <select class="selectpicker" name="hour" id="id_for_hour">
+                  {% for hour in hour_nos %}
+                  <option value="{{ hour.0 }}">{{hour.1}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </form>
+        </div>
+        <div class="col-lg-9" id="edit-att-tab">
+          <br><br>
+          <form id="edit-att-form" method="post">
+            <table id="mytable" class="table table-bordred table-striped">
+
+                             <thead>
+                             <th><input type="checkbox" id="checkall" /></th>
+                             <th>Hour No</th>
+                             <th>Roll No</th>
+                             <th>Name</th>
+                             </thead>
+              <tbody>
+              <!-- <tr>
+              <td>
+                <input type="hidden" id="id_is_present" name="{{ student.pk }}" value="0"/>
+                <input type="checkbox" id="id_is_present" name="{{ student.pk }}" value="1"/>
+              </td>
+              <td>" student.roll_no }}"</td>
+              <td>" student.first_name student.last_name }}"</td>
+              </tr> -->
+              </tbody>
+            </table>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/edit-attendance.js' %}"></script>
+{% endblock %}

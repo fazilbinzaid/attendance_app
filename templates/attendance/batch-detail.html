@@ -23,18 +23,10 @@
       <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingThree">
           <h4 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            <a class="collapsed" role="button"  href="{% url 'attendance:new-attendance' batch.id %}">
               Take New Attendance!
             </a>
           </h4>
-        </div>
-        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="input-group date" data-provide="datepicker">
-            <input type="text" class="form-control">
-            <div class="input-group-addon">
-                <span class="glyphicon glyphicon-th"></span>
-            </div>
-          </div>
         </div>
       </div>
       <div class="panel panel-default">
@@ -68,11 +60,12 @@
             <div class="row">
                 <div class='col-sm-6'>
                     <div class="form-group">
-                        <div class='input-group date' id='datetimepicker4'>
-                            <input type='text' class="form-control" />
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span>
-                            </span>
+                      <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
                         </div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -85,12 +78,12 @@
 
 {% endblock %}
 {% block javascript %}
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     $(function() {
        // Bootstrap DateTimePicker v4
        $('#datetimepicker').datetimepicker({
              format: 'DD/MM/YYYY'
        });
     });
-</script>
+</script> -->
 {% endblock %}
