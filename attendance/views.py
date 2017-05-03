@@ -90,16 +90,16 @@ class BatchDetailView(TemplateView):
 def get_history_data(request):
     if request.is_ajax():
         data = request.GET
-        print(data)
+        # print(data)
         batch_id = data.get("batch_id")
         year = data.get("year")
         month = data.get("month")
         day = data.get("day")
         hour = data.get("hour")
-        print(batch_id, year, month, day)
+        # print(batch_id, year, month, day)
         batch = Batch.objects.get(id=batch_id)
         subject = batch.subjects.get(teacher=Teacher.objects.get(user__username=request.user.username))
-        print(subject)
+        # print(subject)
         hours = Hour.objects.filter(date__year=year,
                                     date__month=month,
                                     date__day=day,
@@ -131,8 +131,8 @@ class EditAttendanceView(TemplateView):
 # But can only edit those registered within couple of days.
     def get_context_data(self, **kwargs):
         context = super(EditAttendanceView, self).get_context_data(**kwargs)
-        teacher = Teacher.objects.get(user__username=self.request.user.username)
-        context['teacher'] = teacher
+        self.teacher = Teacher.objects.get(user__username=self.request.user.username)
+        context['teacher'] = self.teacher
         hour_nos = Hour.HOURS
         context['hour_nos'] = hour_nos
         return context
@@ -140,11 +140,33 @@ class EditAttendanceView(TemplateView):
     def get(self, request, pk, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         teacher = context['teacher']
-        subject = Subject.objects.get(teacher=teacher)
-        batch = self.get_object(pk, Batch)
-        context['subject'] = subject
-        context['batch'] = batch
+        self.batch = self.get_object(pk, Batch)
+        self.subject = Subject.objects.get(teacher=teacher, batch=self.batch)
+        context['subject'] = self.subject
+        context['batch'] = self.batch
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        teacher = context['teacher']
         print(request.POST)
+        data = request.POST
+        batch_id, hour_code = data.get('batch'), data.get('hour')
+        day_id, month_id, year_id = data.get('day'), data.get('month'), data.get('year')
+        att_data = json.loads(request.POST.get('attendance'))
+        batch = Batch.objects.get(pk=batch_id)
+        subject = Subject.objects.get(teacher=teacher, batch=batch)
+        for student_id in att_data:
+            student = self.get_object(student_id, Student)
+            hour_object = Hour.objects.get(date__day=day_id,
+                                           date__month=month_id,
+                                           date__year=year_id,
+                                           subject=subject,
+                                           student=student,
+                                           code=hour_code)
+            hour_object.is_present = bool(int(att_data[student_id]))
+            hour_object.save()
+        return JsonResponse({
+            'message': 'Data have been successfully edited!.',
+            'status': 200
+        })

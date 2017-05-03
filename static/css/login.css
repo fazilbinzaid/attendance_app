@@ -24,6 +24,7 @@ body {
   background: #efefef;
   padding: 0px;
   font-family: 'Varela Round';
+  overflow-x: hidden;
 }
 /*=== 2. Anchor Link ===*/
 a {
