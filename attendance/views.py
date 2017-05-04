@@ -15,6 +15,7 @@ import json
 
 # Create your views here.
 
+# View to create new attendance sheet for teachers.
 class NewAttendanceView(TemplateView):
     template_name = 'attendance/teacher/new-attendance.html'
 
@@ -25,23 +26,32 @@ class NewAttendanceView(TemplateView):
             raise Http404
 
     def get(self, request, pk, *args, **kwargs):
+
         context = self.get_context_data(**kwargs)
         teacher = Teacher.objects.get(user__username=request.user.username)
         batch = self.get_object(pk, Batch)
         subjects = teacher.subjects.filter(batch=batch)
         students = batch.students.order_by('roll_no')
+
+        # context data
         context['hours'] = [item[1] for item in Hour.HOURS]
         context['subjects'] = subjects
         context['teacher'] = teacher
         context['batch'] = batch
         context['students'] = students
+
         return render(request, self.template_name, context)
 
     def post(self, request, pk, *args, **kwargs):
+        # getting data from request.
         subject_id = request.POST.get('subject')
-        subject = self.get_object(subject_id, Subject)
         hour_id = request.POST.get('hour')
         data = json.loads(request.POST.get('attendance'))
+
+        subject = self.get_object(subject_id, Subject)
+
+        # checking if attendance already created.
+        # if not, then carryon to create new.
         for student_id in data:
             student = self.get_object(student_id, Student)
             try:
@@ -58,6 +68,7 @@ class NewAttendanceView(TemplateView):
         })
 
 
+# Menu view for a specific batch selected by a teacher.
 class BatchDetailView(TemplateView):
     template_name = "attendance/teacher/batch-detail.html"
 
@@ -68,38 +79,45 @@ class BatchDetailView(TemplateView):
             raise Http404
 
     def get_context_data(self, **kwargs):
+
         context = super(BatchDetailView, self).get_context_data(**kwargs)
         teacher = Teacher.objects.get(user__username=self.request.user.username)
-        context['teacher'] = teacher
         hour_nos = Hour.HOURS
+
+        context['teacher'] = teacher
         context['hour_nos'] = hour_nos
         return context
 
     def get(self, request, pk, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         teacher = context['teacher']
+
         batch = self.get_object(pk, Batch)
-        context['batch'] = batch
         subject = teacher.subjects.get(batch=batch)
-        context['subject'] = subject
         dates = subject.hours.filter(student__batch=batch).values_list('date').distinct()
+
+        context['batch'] = batch
+        context['subject'] = subject
         context['dates'] = dates
         return render(request, self.template_name, context)
 
 
+# View to return the attendance data for a specific class
+# for a specific subject, on a specific date.
+# ie, history data.
 def get_history_data(request):
     if request.is_ajax():
         data = request.GET
-        # print(data)
+
         batch_id = data.get("batch_id")
         year = data.get("year")
         month = data.get("month")
         day = data.get("day")
         hour = data.get("hour")
-        # print(batch_id, year, month, day)
+
         batch = Batch.objects.get(id=batch_id)
         subject = batch.subjects.get(teacher=Teacher.objects.get(user__username=request.user.username))
-        # print(subject)
+
         hours = Hour.objects.filter(date__year=year,
                                     date__month=month,
                                     date__day=day,
@@ -117,6 +135,9 @@ def get_history_data(request):
 
 
 
+# View to edit the attendance data, if only the data entered date and the edit date
+# is the same one.
+# ie, edit can only be done on the attendance data created on today.
 class EditAttendanceView(TemplateView):
     template_name = 'attendance/teacher/edit-attendance.html'
 
@@ -126,14 +147,12 @@ class EditAttendanceView(TemplateView):
         except model.DoesNotExist:
             raise Http404
 
-# TO DO
-# Using a calendar get every attendance ever registered.
-# But can only edit those registered within couple of days.
     def get_context_data(self, **kwargs):
         context = super(EditAttendanceView, self).get_context_data(**kwargs)
         self.teacher = Teacher.objects.get(user__username=self.request.user.username)
-        context['teacher'] = self.teacher
         hour_nos = Hour.HOURS
+
+        context['teacher'] = self.teacher
         context['hour_nos'] = hour_nos
         return context
 
@@ -142,6 +161,7 @@ class EditAttendanceView(TemplateView):
         teacher = context['teacher']
         self.batch = self.get_object(pk, Batch)
         self.subject = Subject.objects.get(teacher=teacher, batch=self.batch)
+
         context['subject'] = self.subject
         context['batch'] = self.batch
         return render(request, self.template_name, context)
@@ -149,13 +169,15 @@ class EditAttendanceView(TemplateView):
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         teacher = context['teacher']
-        print(request.POST)
         data = request.POST
+
         batch_id, hour_code = data.get('batch'), data.get('hour')
         day_id, month_id, year_id = data.get('day'), data.get('month'), data.get('year')
         att_data = json.loads(request.POST.get('attendance'))
+
         batch = Batch.objects.get(pk=batch_id)
         subject = teacher.subjects.get(batch=batch)
+
         for student_id in att_data:
             student = self.get_object(student_id, Student)
             hour_object = Hour.objects.get(date__day=day_id,
@@ -166,7 +188,11 @@ class EditAttendanceView(TemplateView):
                                            code=hour_code)
             hour_object.is_present = bool(int(att_data[student_id]))
             hour_object.save()
+
         return JsonResponse({
             'message': 'Data have been successfully edited!.',
             'status': 200
         })
+
+
+# class 
