@@ -195,4 +195,4 @@ class EditAttendanceView(TemplateView):
         })
 
 
-# class 
+# class Student

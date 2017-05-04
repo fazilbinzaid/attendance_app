@@ -4,6 +4,7 @@
 $(function() {
   $("#side-menu").metisMenu();
   checkBox();
+  $("#mytable").DataTable();
 });
 
 // ==========SELECTING CHECKBOX IF EVERYONE IS PRESENT=================
