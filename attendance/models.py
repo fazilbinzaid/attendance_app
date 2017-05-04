@@ -7,7 +7,7 @@ from abstract.models import AbstractTimeStampModel
 
 class Subject(models.Model):
 
-    SUBJECTS = (('EP', 'Physics'), ('EC', 'Chemistry'), ('EM', 'Mathematics'), ('EMM', 'Mechanics'))
+    SUBJECTS = (('EP', 'Physics'), ('EC', 'Chemistry'), ('EM', 'Mathematics'), ('EMM', 'Mechanics'), ('ECO', 'Economical Science'), )
 
     code = models.CharField(max_length=3, choices=SUBJECTS)
     batch = models.ForeignKey(Batch, related_name='subjects', null=True, blank=True)

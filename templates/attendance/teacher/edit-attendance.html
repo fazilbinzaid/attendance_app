@@ -21,7 +21,6 @@
     <div class="page-content">
       <div class="container">
         <h3>Select a date and hit go!!</h3>
-        <div class="alert"></div>
         <div class="row">
             <form id="get-date" method="">
               <div class='col-sm-2'>
@@ -53,8 +52,10 @@
               </div>
             </form>
         </div>
-        <div class="col-lg-9" id="edit-att-tab">
+        <div class="alert"></div>
+        <div class="col-lg-8" id="edit-att-tab" style="display: none;">
           <form id="edit-att-form" method="">{% csrf_token %}
+            <br><br>
             <table id="mytable" class="table table-bordred table-striped">
 
                              <thead>
@@ -74,7 +75,7 @@
               </tr> -->
               </tbody>
             </table>
-
+            <button type="submit" id="att_button" class="btn btn-success" name="button">Edit now!</button>
           </form>
         </div>
       </div>
@@ -84,5 +85,5 @@
 {% endblock %}
 
 {% block javascript %}
-<script src="{% static 'js/edit-attendance.js' %}"></script>
+<script src="{% static 'js/attendance/teacher/edit-attendance.js' %}"></script>
 {% endblock %}

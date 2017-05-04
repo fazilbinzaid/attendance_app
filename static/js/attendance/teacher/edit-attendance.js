@@ -56,7 +56,7 @@ $(function(){
             }
 
           }
-          $("#edit-att-form").append('<button type="submit" id="att_button" class="btn btn-success" name="button">Edit now!</button>');
+          $("#att_button").show()
         }
         else {
           $("#att_button").hide();
@@ -101,7 +101,7 @@ $(function(){
       success: function(data) {
         $successDiv = $('<div id="alert" class="alert text-center alert-info alert-dismissable">' +
                             "<strong>" + data.message + "</strong></div>");
-        $(".alert").html($successDiv);
+        $(".alert").html($successDiv).fadeOut(10000);
       },
       error: function(data) {
         console.log(data);
