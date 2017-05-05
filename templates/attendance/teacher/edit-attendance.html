@@ -20,7 +20,6 @@
   <div class="">
     <div class="page-content">
       <div class="container">
-        <h3>Select a date and hit go!!</h3>
         <div class="row">
             <form id="get-date" method="">
               <div class='col-sm-2'>
@@ -53,17 +52,26 @@
             </form>
         </div>
         <div class="alert"></div>
-        <div class="col-lg-8" id="edit-att-tab" style="display: none;">
+        <div class="col-lg-9" id="edit-att-tab" style="display: none;">
           <form id="edit-att-form" method="">{% csrf_token %}
             <br><br>
-            <table id="mytable" class="table table-bordred table-striped">
+            <!-- <table id="mytable" class="table table-bordred table-striped">
 
                              <thead>
                              <th><input type="checkbox" id="checkall" /></th>
                              <th>Hour No</th>
                              <th>Roll No</th>
                              <th>Name</th>
-                             </thead>
+                             </thead> -->
+             <table id="mytable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+               <thead>
+                 <tr>
+                 <th><input type="checkbox" id="checkall" /></th>
+                 <th>Hour No</th>
+                 <th>Roll No</th>
+                 <th>Name</th>
+                 </tr>
+               </thead>
               <tbody>
               <!-- <tr>
               <td>

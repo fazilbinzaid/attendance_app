@@ -74,3 +74,23 @@ var attendance = (function() {
   }
   return attendance;
 })();
+
+
+// ==========SELECTING CHECKBOX IF EVERYONE IS PRESENT=================
+
+function checkBox(){
+  $("#mytable #checkall").click(function () {
+          if ($("#mytable #checkall").is(':checked')) {
+              $("#mytable input[type=checkbox]").each(function () {
+                  $(this).prop("checked", true);
+              });
+
+          } else {
+              $("#mytable input[type=checkbox]").each(function () {
+                  $(this).prop("checked", false);
+              });
+          }
+      });
+
+      $("[data-toggle=tooltip]").tooltip();
+}

@@ -3,6 +3,7 @@
 $(function(){
 
   $("#edit-att-tab").hide();
+  checkBox();
 
 // ============AJAX Query to get the attendance data from backend===============
 
