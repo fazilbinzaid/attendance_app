@@ -1,6 +1,8 @@
 from django.db import models
-from accounts.models import Teacher, AuthUser, Student, Batch
+from accounts.models import Teacher, AuthUser, Student, Batch, Course
 from abstract.models import AbstractTimeStampModel
+
+import datetime
 
 # Create your models here.
 
@@ -12,9 +14,10 @@ class Subject(models.Model):
     code = models.CharField(max_length=3, choices=SUBJECTS)
     batch = models.ForeignKey(Batch, related_name='subjects', null=True, blank=True)
     teacher = models.ForeignKey(Teacher, related_name='subjects', null=True, blank=True)
+    course = models.ForeignKey(Course, related_name='subjects', null=True, blank=True)
 
     class Meta:
-        unique_together = ('code', 'batch', 'teacher')
+        unique_together = ('code', 'batch', 'course')
 
     @property
     def name(self):

@@ -51,14 +51,25 @@ class Teacher(models.Model):
         return "%s %s" % (self.first_name, self.last_name)
 
 
+class Course(models.Model):
+    name = models.CharField(max_length=32, null=True, blank=True)
+    working_hours = models.IntegerField(null=True, blank=True)
+    working_days = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Batch(models.Model):
     name = models.CharField(max_length=20, unique=True)
+    course = models.ForeignKey(Course, related_name='courses', null=True, blank=True)
     batch_teacher = models.OneToOneField(Teacher, related_name='batch', null=True, blank=True)
     division = models.CharField(max_length=2, null=True, blank=True)
     strength = models.IntegerField()
 
     class Meta:
         verbose_name_plural = 'batches'
+        unique_together = ('course', 'division', 'name', )
 
     def __str__(self):
         return self.name
@@ -76,4 +87,4 @@ class Student(models.Model):
     contact_no = models.CharField(max_length=13, blank=True, null=True)
 
     def __str__(self):
-        return self.user.username
+        return "{} - {}".format(self.user.username, self.batch)

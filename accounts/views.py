@@ -170,7 +170,6 @@ class StaffRegisterView(TemplateView):
 
 
 class DashBoardView(TemplateView):
-	# template_name = 'accounts/dashboard-teacher.html'
 
 	def get_object(self, username):
 		try:
@@ -190,8 +189,8 @@ class DashBoardView(TemplateView):
 		if type(user) == Teacher:
 			batches = Batch.objects.filter(id__in=user.subjects.values_list('batch'))
 			context['batches'] = batches
-			return render(request, 'accounts/dashboard-teacher.html', context)
+			return render(request, 'attendance/teacher/dashboard.html', context)
 		elif type(user) == Student:
-			subjects = Subject.objects.filter(id__in=user.hours.values_list('subject'))
+			subjects = Subject.objects.filter(batch=user.batch)
 			context['subjects'] = subjects
-			return render(request, 'accounts/dashboard-student.html', context)
+			return render(request, 'attendance/student/dashboard.html', context)

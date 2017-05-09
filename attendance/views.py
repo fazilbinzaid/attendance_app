@@ -128,8 +128,8 @@ def get_history_data(request):
                                                       'is_present',
                                                       'student__pk',
                                                       'student__roll_no',
-                                                      'student__first_name',
                                                       'student__last_name',
+                                                      'student__first_name',
                                                       ).order_by('student__roll_no')
         return JsonResponse({'results': list(hours)})
 
@@ -195,4 +195,32 @@ class EditAttendanceView(TemplateView):
         })
 
 
-# class Student
+class RecentAttendanceView(TemplateView):
+    template_name = 'attendance/teacher/recent-attendance.html'
+
+    def get_object(self, pk, model):
+        try:
+            return model.objects.get(pk=pk)
+        except model.DoesNotExist:
+            raise Http404
+
+    def get_context_data(self, **kwargs):
+        context = super(RecentAttendanceView, self).get_context_data(**kwargs)
+        self.teacher = Teacher.objects.get(user__username=self.request.user.username)
+        hour_nos = Hour.HOURS
+
+        context['teacher'] = self.teacher
+        context['hour_nos'] = hour_nos
+        return context
+
+    def get(self, request, pk, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        batch = self.get_object(pk, Batch)
+        teacher = context['teacher']
+        subject = Subject.objects.get(teacher=teacher, batch=batch)
+        dates = Hour.objects.filter(student__batch=batch, subject=subject).values('date', 'code').distinct()
+        print(dates.query)
+
+        context['batch'] = batch
+        context['subject'] = subject
+        return render(request, self.template_name, context)

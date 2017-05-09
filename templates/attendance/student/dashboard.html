@@ -21,29 +21,34 @@
   <div class="page-content">
     <div class="col-lg-4 pull-right">
       <div class="row">
-        <h4 class="pull-right">Your Class: {{user.batch}}</h4>
+        <h4 class="pull-right">Course: {{user.batch.course}}</h4>
       </div>
       <div class="row">
-        <h4 class="pull-right">Your Class Teacher: {{user.batch.batch_teacher}}</h4>
+        <h4 class="pull-right">Class: {{user.batch}}</h4>
+      </div>
+      <div class="row">
+        <h4 class="pull-right">Class Teacher: {{user.batch.batch_teacher}}</h4>
       </div>
     </div>
     <h3>Subjects</h3>
-    <div id="sum_box" class="row mbl">
-      {% for subject in subjects %}
-        <div class="col-lg-4 col-md-3">
-            <div class="custom-panel visit db mbm">
-                <div class="panel-body">
-                    <a href="#"><p class="icon">
-                        <i class="icon fa fa-group"></i>
-                    </p>
-                    <h4 class="value">
-                        <span>{{subject.teacher}}</span></h4>
-                    <p class="description">
-                        {{subject}}</p></a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
+    <div class="page-content">
+      <div id="sum_box" class="row mbl">
+        {% for subject in subjects %}
+          <div class="col-lg-4 col-md-3">
+              <div class="custom-panel visit db mbm">
+                  <div class="panel-body">
+                      <a href="#"><p class="icon">
+                          <i class="icon fa fa-group"></i>
+                      </p>
+                      <h4 class="value">
+                          <span>{{subject}}</span></h4>
+                      <p class="description">
+                          {{subject.teacher}}</p></a>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
     </div>
   </div>
 </div>
