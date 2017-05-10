@@ -218,9 +218,10 @@ class RecentAttendanceView(TemplateView):
         batch = self.get_object(pk, Batch)
         teacher = context['teacher']
         subject = Subject.objects.get(teacher=teacher, batch=batch)
-        dates = Hour.objects.filter(student__batch=batch, subject=subject).values('date', 'code').distinct()
-        print(dates.query)
+        dates = Hour.objects.filter(student__batch=batch, subject=subject).values('date', 'code').distinct().order_by('-date')[:10]
+        print(dates)
 
         context['batch'] = batch
         context['subject'] = subject
+        context['dates'] = dates
         return render(request, self.template_name, context)

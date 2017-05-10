@@ -26,7 +26,20 @@
         </tr>
       </thead>
     <tbody>
-      
+      <tr>
+        <td></td>
+      </tr>
+      {% for item in dates %}
+      <tr data-toggle="collapse" data-target="#demo{{forloop.counter}}" class="clickable">
+        {% ifchanged %}<td><a href="#">{{ item.date }}</a></td>{% endifchanged %}
+      </tr>
+      <tr>
+        <td colspan="3">
+            <div id="demo{{forloop.counter}}" class="collapse">Hidden by default</div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
   </div>
 </div>
 
