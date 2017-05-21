@@ -2,6 +2,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
+from django.db.models import F
 from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
@@ -15,21 +16,31 @@ import json
 
 # Create your views here.
 
+def get_object(pk, model):
+    try:
+        return model.objects.get(pk=pk)
+    except model.DoesNotExist:
+        raise Http404
+
+def get_user_object(username):
+	try:
+		return Teacher.objects.get(user__username=username)
+	except Teacher.DoesNotExist:
+		try:
+			return Student.objects.get(user__username=username)
+		except Student.DoesNotExist:
+			return HttpResponse("Not Found!.")
+
+
 # View to create new attendance sheet for teachers.
 class NewAttendanceView(TemplateView):
     template_name = 'attendance/teacher/new-attendance.html'
-
-    def get_object(self, pk, model):
-        try:
-            return model.objects.get(pk=pk)
-        except model.DoesNotExist:
-            raise Http404
 
     def get(self, request, pk, *args, **kwargs):
 
         context = self.get_context_data(**kwargs)
         teacher = Teacher.objects.get(user__username=request.user.username)
-        batch = self.get_object(pk, Batch)
+        batch = get_object(pk, Batch)
         subjects = teacher.subjects.filter(batch=batch)
         students = batch.students.order_by('roll_no')
 
@@ -48,12 +59,12 @@ class NewAttendanceView(TemplateView):
         hour_id = request.POST.get('hour')
         data = json.loads(request.POST.get('attendance'))
 
-        subject = self.get_object(subject_id, Subject)
+        subject = get_object(subject_id, Subject)
 
         # checking if attendance already created.
         # if not, then carryon to create new.
         for student_id in data:
-            student = self.get_object(student_id, Student)
+            student = get_object(student_id, Student)
             try:
                 hour = Hour.objects.create(code=hour_id, subject=subject, student=student)
             except IntegrityError:
@@ -72,16 +83,10 @@ class NewAttendanceView(TemplateView):
 class BatchDetailView(TemplateView):
     template_name = "attendance/teacher/batch-detail.html"
 
-    def get_object(self, pk, model):
-        try:
-            return model.objects.get(pk=pk)
-        except model.DoesNotExist:
-            raise Http404
-
     def get_context_data(self, **kwargs):
 
         context = super(BatchDetailView, self).get_context_data(**kwargs)
-        teacher = Teacher.objects.get(user__username=self.request.user.username)
+        teacher = get_user_object(self.request.user.username)
         hour_nos = Hour.HOURS
 
         context['teacher'] = teacher
@@ -92,7 +97,7 @@ class BatchDetailView(TemplateView):
         context = self.get_context_data(**kwargs)
         teacher = context['teacher']
 
-        batch = self.get_object(pk, Batch)
+        batch = get_object(pk, Batch)
         subject = teacher.subjects.get(batch=batch)
         dates = subject.hours.filter(student__batch=batch).values_list('date').distinct()
 
@@ -141,12 +146,6 @@ def get_history_data(request):
 class EditAttendanceView(TemplateView):
     template_name = 'attendance/teacher/edit-attendance.html'
 
-    def get_object(self, pk, model):
-        try:
-            return model.objects.get(pk=pk)
-        except model.DoesNotExist:
-            raise Http404
-
     def get_context_data(self, **kwargs):
         context = super(EditAttendanceView, self).get_context_data(**kwargs)
         self.teacher = Teacher.objects.get(user__username=self.request.user.username)
@@ -159,7 +158,7 @@ class EditAttendanceView(TemplateView):
     def get(self, request, pk, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         teacher = context['teacher']
-        self.batch = self.get_object(pk, Batch)
+        self.batch = get_object(pk, Batch)
         self.subject = Subject.objects.get(teacher=teacher, batch=self.batch)
 
         context['subject'] = self.subject
@@ -179,7 +178,7 @@ class EditAttendanceView(TemplateView):
         subject = teacher.subjects.get(batch=batch)
 
         for student_id in att_data:
-            student = self.get_object(student_id, Student)
+            student = get_object(student_id, Student)
             hour_object = Hour.objects.get(date__day=day_id,
                                            date__month=month_id,
                                            date__year=year_id,
@@ -195,33 +194,15 @@ class EditAttendanceView(TemplateView):
         })
 
 
-class RecentAttendanceView(TemplateView):
-    template_name = 'attendance/teacher/recent-attendance.html'
-
-    def get_object(self, pk, model):
-        try:
-            return model.objects.get(pk=pk)
-        except model.DoesNotExist:
-            raise Http404
+class StudentListView(TemplateView):
+    template_name = 'attendance/teacher/student-list.html'
 
     def get_context_data(self, **kwargs):
-        context = super(RecentAttendanceView, self).get_context_data(**kwargs)
-        self.teacher = Teacher.objects.get(user__username=self.request.user.username)
-        hour_nos = Hour.HOURS
-
-        context['teacher'] = self.teacher
-        context['hour_nos'] = hour_nos
+        context = super(StudentListView, self).get_context_data(**kwargs)
+        self.teacher = get_user_object(self.request.user.username)
+        context['teacher'] = teacher
         return context
 
-    def get(self, request, pk, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        batch = self.get_object(pk, Batch)
-        teacher = context['teacher']
-        subject = Subject.objects.get(teacher=teacher, batch=batch)
-        dates = Hour.objects.filter(student__batch=batch, subject=subject).values('date', 'code').distinct().order_by('-date')[:10]
-        print(dates)
-
-        context['batch'] = batch
-        context['subject'] = subject
-        context['dates'] = dates
         return render(request, self.template_name, context)

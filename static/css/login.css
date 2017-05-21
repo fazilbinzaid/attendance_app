@@ -25,10 +25,11 @@ body {
   padding: 0px;
   font-family: 'Varela Round';
   overflow-x: hidden;
+  /*overflow-y: hidden;*/
 }
 /*=== 2. Anchor Link ===*/
 a {
-  /*color: #aaaaaa;*/
+  color: #0e0e0e;
   transition: all ease-in-out 200ms;
 }
 a:hover {
@@ -220,10 +221,11 @@ label.form-invalid:after {
 }
 #sum_box p.description {
   margin-top: 0px;
+  font-size: 17px;
   opacity: .6;
 }
 #sum_box .db:hover {
-  background: #40516f;
+  background: rgba(51, 120, 183, 0.42);
   color: #fff;
 }
 #sum_box .db:hover .icon {
@@ -318,5 +320,8 @@ input[type="checkbox"] {
   transform:scale(2, 2);
 }
 .custom-panel-padding {
-  padding: 35px;
+  padding: 48px;
+}
+.value {
+  font-size: 13px;
 }

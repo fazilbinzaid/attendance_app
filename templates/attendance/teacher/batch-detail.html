@@ -24,6 +24,20 @@
         <div class="col-lg-4 col-md-3">
             <div class="custom-panel visit db mbm">
                 <div class="panel-body custom-panel-padding">
+                    <a href="#"><p class="icon">
+                        <i class="icon fa fa-group"></i>
+                    </p>
+                    <h4 class="value">
+                        <span>Student List</span></h4>
+                    <p class="description"></p></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="sum_box" class="mbl">
+        <div class="col-lg-4 col-md-3">
+            <div class="custom-panel visit db mbm">
+                <div class="panel-body custom-panel-padding">
                     <a href="{% url 'attendance:new-attendance' batch.id %}"><p class="icon">
                         <i class="icon fa fa-group"></i>
                     </p>
@@ -39,7 +53,7 @@
             <div class="custom-panel visit db mbm">
                 <div class="panel-body custom-panel-padding">
                     <a href="{% url 'attendance:batch-history' batch.id %}"><p class="icon">
-                        <i class="icon fa fa-group"></i>
+                        <i class="icon fa fa-cog"></i>
                     </p>
                     <h4 class="value">
                         <span>Go to History!</span></h4>
@@ -52,11 +66,11 @@
         <div class="col-lg-4 col-md-3">
             <div class="custom-panel visit db mbm">
                 <div class="panel-body custom-panel-padding">
-                    <a href="{% url 'attendance:batch-recent' batch.id %}"><p class="icon">
-                        <i class="icon fa fa-group"></i>
+                    <a href="#"><p class="icon">
+                        <i class="icon fa fa-eye"></i>
                     </p>
                     <h4 class="value">
-                        <span>Something else!</span></h4>
+                        <span>Today's Attendance</span></h4>
                     <p class="description"></p></a>
                 </div>
             </div>

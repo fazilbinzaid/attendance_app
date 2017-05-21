@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth import login, authenticate, logout
-from django.http import HttpResponse, Http404, JsonResponse
+from django.http import HttpResponse, Http404, JsonResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -19,6 +19,16 @@ def username_check(request):
 			if AuthUser.objects.filter(username=check).exists():
 				return HttpResponse(False)
 			return HttpResponse(True)
+
+
+def get_user_object(username):
+	try:
+		return Teacher.objects.get(user__username=username)
+	except Teacher.DoesNotExist:
+		try:
+			return Student.objects.get(user__username=username)
+		except Student.DoesNotExist:
+			return HttpResponse("Not Found!.")
 
 
 class LoginView(TemplateView):
@@ -171,20 +181,10 @@ class StaffRegisterView(TemplateView):
 
 class DashBoardView(TemplateView):
 
-	def get_object(self, username):
-		try:
-			return Teacher.objects.get(user__username=username)
-		except Teacher.DoesNotExist:
-			try:
-				return Student.objects.get(user__username=username)
-			except Student.DoesNotExist:
-				return HttpResponse("Not Found!.")
-
-
 	def get(self, request, *args, **kwargs):
 		context = self.get_context_data(**kwargs)
 		username = request.user.username
-		user = self.get_object(username)
+		user = get_user_object(username)
 		context['user'] = user
 		if type(user) == Teacher:
 			batches = Batch.objects.filter(id__in=user.subjects.values_list('batch'))

@@ -23,7 +23,7 @@
       <form id="attendance" class="" action="" method="post">{% csrf_token %}
         <div class="row">
           <div class="col-md-4 pull-left">
-            <select class="selectpicker" name="hour" id="id_batch">
+            <select class="selectpicker" name="hour" id="id_for_hour">
               <option value="">-----</option>
               {% for hour in hours %}
               <option value="{{ forloop.counter }}">{{ hour }}</option>
@@ -31,7 +31,7 @@
             </select>
           </div>
           <div class="col-md-4 pull-right">
-            <select class="selectpicker" name="subject" id="id_batch">
+            <select class="selectpicker" name="subject" id="id_for_batch">
               {% for subject in subjects %}
               <option value="{{ subject.id }}">{{ subject.name }}</option>
               {% endfor %}
